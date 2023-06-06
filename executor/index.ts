@@ -19,6 +19,9 @@ const init = async () => {
     port: 5432,
   });
   await pgClient.connect();
+  await pgClient.query(
+    "CREATE TABLE IF NOT EXISTS todos (title VARCHAR(255));"
+  );
 };
 
 init().then(() => {
