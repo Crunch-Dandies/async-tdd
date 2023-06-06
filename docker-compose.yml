@@ -12,3 +12,14 @@ services:
     ports:
       - 15672:15672
       - 5672:5672
+  pgdb:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: pgpassword
+      POSTGRES_DB: todos
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5432:5432
