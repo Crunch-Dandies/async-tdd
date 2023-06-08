@@ -1,1 +1,0 @@
-CREATE TABLE IF NOT EXISTS todos (title VARCHAR(255));

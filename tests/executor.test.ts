@@ -22,14 +22,15 @@ test.beforeAll(async () => {
   await pgClient.connect();
 });
 
-test("executor adds todo from queue to database", () => {
+test("executor adds todo from queue to database", async () => {
   const title = `test_${Date.now()}`;
   channel.sendToQueue("todos", Buffer.from(title));
 
-  expect(async () => {
+  await expect(async () => {
     const result = await pgClient.query(
       `SELECT * FROM todos WHERE title = '${title}'`
     );
     expect(result.rows.length).toBe(1);
+    expect(result.rows[0]).toMatchObject({ title });
   }).toPass({ timeout: 5000 });
 });
