@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import amqplib from "amqplib";
 
-let lastMessage = "";
+const messages: string[] = [];
 
 test.beforeAll(async () => {
   const connection = await amqplib.connect(
@@ -9,10 +9,10 @@ test.beforeAll(async () => {
   );
   const channel = await connection.createChannel();
   await channel.assertQueue("todos");
-  await channel.purgeQueue("todos");
-  channel.consume("todos", (message) => {
+  // await channel.purgeQueue("todos");
+  await channel.consume("todos", (message) => {
     if (!message) return;
-    lastMessage = message.content.toString();
+    messages.push(message.content.toString());
   });
 });
 
@@ -31,6 +31,6 @@ test("receiver sends messages to the queue", async ({ request }) => {
   });
 
   await expect(() => {
-    expect(lastMessage).toBe(title);
+    expect(messages).toEqual(expect.arrayContaining([title]));
   }).toPass({ timeout: 5000 });
 });

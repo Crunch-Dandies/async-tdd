@@ -23,3 +23,28 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 5432:5432
+  receiver:
+    build:
+      dockerfile: ./.docker/service/Dockerfile
+      context: .
+    ports:
+      - 1500:1500
+    volumes:
+      - ./receiver:/usr/src/app
+    restart: always
+  executor:
+    build:
+      dockerfile: ./.docker/service/Dockerfile
+      context: .
+    volumes:
+      - ./executor:/usr/src/app
+    restart: always
+  reader:
+    build:
+      dockerfile: ./.docker/service/Dockerfile
+      context: .
+    ports:
+      - 1501:1501
+    volumes:
+      - ./reader:/usr/src/app
+    restart: always

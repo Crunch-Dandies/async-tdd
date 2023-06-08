@@ -7,7 +7,7 @@ let pgClient: Client;
 const init = async () => {
   pgClient = new Client({
     user: "pguser",
-    host: "localhost",
+    host: "pgdb",
     database: "todos",
     password: "pgpassword",
     port: 5432,
